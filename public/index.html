@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modular-jquery-example</title>
+    <script src="external/systemJS/es6Detection.js"></script>
+    <script src="external/systemJS/es6Pollifyls.js"></script>
+    <link href="external/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <link href="external/jstree-master/dist/themes/default/style.min.css" rel="stylesheet" />
+    <link id="multi-theme" href="external/jquery-ui-1.12.1/themes/cupertino/jquery-ui.min.css" rel="stylesheet"
+        id="1ACC78AA-7D66-4877-B797-2298E5E88295" />
+    <link href="external/jqGrid/ui.jqgrid.min.css" rel="stylesheet" />
+    <link href="css/jqGridAdapter.css" rel="stylesheet" />
+    <link href="external/jqueryCalendar/css/jquery.calendars.picker.css" rel="stylesheet" />
+    <link href="external/jqueryCalendar/css/ui.calendars.picker.css" rel="stylesheet" />
+    <link href="external/jqueryCalendar/css/ui-cupertino.calendars.picker.css" rel="stylesheet" />
+    <link href="css/jqueryCalendarAdapter.css" rel="stylesheet" />
+    <link href="external/multipleSelect/multiple-select.min.css" rel="stylesheet" />
+    <link href="external/jQuery-Validation-Engine-master/css/style.css" rel="stylesheet" />
+    <link href="external/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <!-- <link href="css/persian-font.css" rel="stylesheet" /> -->
+    <link href="css/resizableSideMenu.css" rel="stylesheet" />
+    <link href="css/treeJs_custom.css" rel="stylesheet" />
+    <link href="css/topPanelSearchBox.css" rel="stylesheet" />
+    <link href="css/jqueryUiTabAdapter.css" rel="stylesheet" />
+    <link href="css/jqueryUiDialogAdapter.css" rel="stylesheet" />
+    <link href="css/multipleSelectAdapter.css" rel="stylesheet" />
+</head>
+
+<body class="">
+    <div id="container" class="">
+        <div id="toolbar" class="ui-state-active">
+            <a target="blank" href="https://github.com/mb-ui/modular-jquery-example">
+                APP TITLE IS PLACED HERE
+            </a>
+        </div>
+        <div id="sideMenuContainer">
+            <div id="horizentalMenuContainer" class="rtl" style="right:356px;">
+                <div id="horizentalMenuContainerInner" class="ui-widget ui-widget-content ui-corner-all">
+                    <div id="horizentalTabs">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="external/jquery/jquery-3.5.1.min.js"></script>
+    <script src="external/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <!-- <script src="external/jqGrid/grid.locale-fa.js"></script> -->
+    <script src="external/jqGrid/jquery.jqgrid.src.js"></script>
+    <script src="external/multipleSelect/multiple-select.min.js"></script>
+    <script src="external/jqueryCalendar/js/jquery.plugin.js"></script>
+    <script src="external/jqueryCalendar/js/jquery.calendars.all.min.js"></script>
+    <script src="external/jqueryCalendar/js/jquery.calendars.picker.ext.min.js"></script>
+    <!-- <script src="external/jqueryCalendar/js/jquery.calendars.persian.js"></script>
+    <script src="external/jqueryCalendar/js/jquery.calendars.persian-fa.js"></script> -->
+    <!-- <script src="external/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-fa.js"></script> -->
+    <script src="external/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-en.js"></script>
+    <script src="external/jQuery-Validation-Engine-master/js/jquery.validationEngine.min.js"></script>
+    <script src="external/jstree-master/dist/jstree.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/jqueryExtension.js"></script>
+    <script src="js/sideMenu.js"></script>
+    <script src="js/adapters/tabAdapter.js"></script>
+    <script src="js/adapters/gridAdapter.js"></script>
+    <!-- <script src="js/adapters/multipleSelectAdapter/lang/fa.js"></script> -->
+    <script src="js/adapters/multipleSelectAdapter/index.js"></script>
+    <script src="js/adapters/calendarAdapter/index.js"></script>
+    <!-- <script src="js/adapters/calendarAdapter/lang/fa.js"></script> -->
+    <script src="js/adapters/dialogAdapter.js"></script>
+    <script src="js/adapters/validationAdapter.js"></script>
+    <script>
+        (function () {
+            var sideMenuContainer = $('#sideMenuContainer'),
+                horizentalTabsContainer = $('#horizentalMenuContainer'),
+                sideMenuPanelListEl;
+            sideMenuContainer.sideMenu({
+                dir: 'rtl',//optional
+                tabListWidth: 40,//optional
+                panelWidth: 310,//optional
+                panelMinWidth: 150,//optional
+                beforeResizeAsync: function (e, ui) {
+                    if (!sideMenuPanelListEl)
+                        sideMenuPanelListEl = $('.sideMenu-panelList', sideMenuContainer).first();
+                    horizentalTabsContainer.add(sideMenuPanelListEl).addClass('loading');
+                },
+                onResize: function (e, ui, obj) {
+                    var tabListWidth = obj.tabListWidth, panelWidth = obj.panelWidth;
+                    horizentalTabsContainer.css('right', tabListWidth + panelWidth + 5 + 'px').add(sideMenuPanelListEl).removeClass('loading');
+                },
+                onOpen: function (obj) {
+                    horizentalTabsContainer.css('right', obj.tabListWidth + obj.panelWidth + 5 + 'px');
+                },
+                onClose: function (obj) {
+                    horizentalTabsContainer.css('right', obj.tabListWidth + 1 + 'px').add(sideMenuPanelListEl).removeClass('loading');
+                }
+            })
+                .on('firstselecttab.sidemenu', function (e, ui) {
+                    ui.panel.append('<p>loading...</p>');
+                    var extarOptions = ui.tabObj.extarOptions;
+                    $.ajax({
+                        url: extarOptions.templateUrl,
+                        dataType: 'html',
+                        type: 'get'
+                    }).done(function (data) {
+                        ui.panel.empty().append(data);
+                        if (extarOptions.moduleUrl) { $$.importModule(extarOptions.moduleUrl).then(function (result) { result.default(ui.panel); }); }
+                    });
+                })
+                .sideMenu('openTabs', [
+                    { icon: 'ui-icon ui-icon-flag', id: 'aboutUs', text: '', tooltip: 'About Us', extarOptions: { templateUrl: 'html/aboutUs.html' } },
+                    { icon: 'ui-icon ui-icon-folder-open', id: 'menu', text: '', extarOptions: { moduleUrl: 'treeMenu/index.js', templateUrl: 'js/modules/treeMenu/index.html' }, tooltip: 'Menu' },
+                    { icon: 'ui-icon ui-icon-gear', id: 'setting', text: '', extarOptions: { moduleUrl: 'setting/index.js', templateUrl: 'js/modules/setting/index.html' }, tooltip: 'Setting' },
+                    { icon: 'ui-icon ui-icon-info', id: 'help', text: '', tooltip: 'Help', extarOptions: { templateUrl: 'html/help.html' } }
+                ])
+                .sideMenu('selectTab', 'menu');
+            $('#horizentalTabs').tabAdapter({
+                dir: 'rtl'//optional
+            });
+        })();
+    </script>
+</body>
+
+</html>
